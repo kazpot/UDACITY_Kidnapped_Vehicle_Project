@@ -116,4 +116,9 @@ The two things the grading code is looking for are:
 2. **Performance**: your particle filter should complete execution within the time specified by `max_runtime` in `src/main.cpp`.
 
 
+## Alternative way to build
 
+~~~
+cd /c/work/CarND-Kidnapped-Vehicle-Project/src
+g++ helper_functions.h  main.cpp  map.h  particle_filter.cpp  particle_filter.h -std=c++11 -o ../build/particle_filter
+~~~
