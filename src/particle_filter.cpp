@@ -12,6 +12,8 @@
 
 #include "particle_filter.h"
 
+#define M_PI 3.14159265358979323846
+
 void ParticleFilter::init(double x, double y, double theta, double std[]) {
 	// TODO: Set the number of particles. Initialize all particles to first position (based on estimates of 
 	//   x, y, theta and their uncertainties from GPS) and all weights to 1. 
@@ -92,7 +94,7 @@ void ParticleFilter::updateWeights(double sensor_range, double std_landmark[],
 	//   3.33. Note that you'll need to switch the minus sign in that equation to a plus to account 
 	//   for the fact that the map's y-axis actually points downwards.)
 	
-	for (int i=0; i < num_particles.size(); ++i){
+	for (int i=0; i < num_particles; ++i){
 		Particle p = particles[i];
 
 		double px = p.x;
@@ -100,16 +102,19 @@ void ParticleFilter::updateWeights(double sensor_range, double std_landmark[],
 		double ptheta = p.theta;
 
         std::vector<LandmarkObs> transformed_obs;
-		for (int j=0; j < observations.size()){
-            tx = observations[j].x * cos(ptheta) - observations[j].y * sin(ptheta) + px;
-            ty = observations[j].x * sin(ptheta) + observations[j].y * cos(ptheta) + py;
+		for (int j=0; j < observations.size(); ++j){
+            double tx = observations[j].x * cos(ptheta) - observations[j].y * sin(ptheta) + px;
+            double ty = observations[j].x * sin(ptheta) + observations[j].y * cos(ptheta) + py;
             transformed_obs.push_back(LandmarkObs{observations[j].id, tx, ty});
 		}
 
 		std::vector<LandmarkObs> predicted;
-		for (int k=0; k < map_landmarks.size()l ++k){
+		for (int k=0; k < map_landmarks.landmark_list.size(); ++k){
+		   int id = map_landmarks.landmark_list[k].id_i;
+		   float landx = map_landmarks.landmark_list[k].x_f;
+		   float landy =map_landmarks.landmark_list[k].y_f;
 	       if (fabs(landx - px) <= sensor_range && fabs(landy - py) <= sensor_range){
-		      predictions.push_back(LandmarkObs{map_landmarks[k].id_i, map_landmarks[k]}.x_f, map_landmarks[k].y_f);
+		      predicted.push_back(LandmarkObs{id, landx, landy});
 		   }
 		}
 
@@ -145,7 +150,7 @@ void ParticleFilter::resample() {
 
 	std::vector<Particle> new_particles;
     
-    double maxw = *max_element(begin(weights), end(weights))
+    double maxw = *max_element(begin(weights), end(weights));
 
     std::mt19937 generator (123);
     std::uniform_real_distribution<double> dis(0.0, 1.0);

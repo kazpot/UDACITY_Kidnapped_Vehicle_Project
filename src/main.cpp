@@ -43,12 +43,12 @@ int main() {
 	double sigma_landmark [2] = {0.3, 0.3}; // Landmark measurement uncertainty [x [m], y [m]]
 
 	// noise generation
-	default_random_engine gen;
-	normal_distribution<double> N_x_init(0, sigma_pos[0]);
-	normal_distribution<double> N_y_init(0, sigma_pos[1]);
-	normal_distribution<double> N_theta_init(0, sigma_pos[2]);
-	normal_distribution<double> N_obs_x(0, sigma_landmark[0]);
-	normal_distribution<double> N_obs_y(0, sigma_landmark[1]);
+	std::default_random_engine gen;
+	std::normal_distribution<double> N_x_init(0, sigma_pos[0]);
+	std::normal_distribution<double> N_y_init(0, sigma_pos[1]);
+	std::normal_distribution<double> N_theta_init(0, sigma_pos[2]);
+	std::normal_distribution<double> N_obs_x(0, sigma_landmark[0]);
+	std::normal_distribution<double> N_obs_y(0, sigma_landmark[1]);
 	double n_x, n_y, n_theta, n_range, n_heading;
 	// Read map data
 	Map map;

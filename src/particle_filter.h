@@ -9,6 +9,8 @@
 #ifndef PARTICLE_FILTER_H_
 #define PARTICLE_FILTER_H_
 
+#define M_PI 3.14159265358979323846
+
 #include "helper_functions.h"
 
 struct Particle {
